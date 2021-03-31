@@ -1,0 +1,51 @@
+name: discord
+on:
+  issues:
+    types: [labeled]
+           
+jobs:
+  send-to-frontend-discord:
+    if: contains(github.event.issue.labels.*.name, 'frontend')
+    name: "Send To FE Team"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "hugoalh/GitHubAction.SendToDiscord@v2.0.0"
+        with:
+          webhook_id: ${{ secrets.DISCORD_WEBHOOK_FRONTEND_ID}}
+          webhook_token: ${{ secrets.DISCORD_WEBHOOK_FRONTEND_TOKEN}}
+          variable_join: "."
+          variable_prefix: "%"
+          variable_suffix: "%"
+          webhook_name: 'QC team'
+          webhook_avatarurl: 'https://i.imgur.com/hxp6wC7.png'
+          message_embed_title: ${{ github.event.issue.title }}
+          message_embed_description: ${{ github.event.issue.body }}
+          message_embed_titleurl: ${{ github.event.issue.html_url }}
+          message_embed_colour: "255,0,0"
+          message_embed_authorname: ${{ github.event.issue.user.login }}
+          message_embed_authorurl: ${{ github.event.issue.user.html_url }}
+          message_embed_authoravatarurl: ${{ github.event.issue.user.avatar_url }}
+          message_usetexttospeech: "false"
+ 
+  send-to-backend-discord:
+    if: contains(github.event.issue.labels.*.name, 'backend')
+    name: "Send To BE Team"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "hugoalh/GitHubAction.SendToDiscord@v2.0.0"
+        with:
+          webhook_id: ${{ secrets.DISCORD_WEBHOOK_BACKEND_ID}}
+          webhook_token: ${{ secrets.DISCORD_WEBHOOK_BACKEND_TOKEN}}
+          variable_join: "."
+          variable_prefix: "%"
+          variable_suffix: "%"
+          webhook_name: 'QC team'
+          webhook_avatarurl: 'https://i.imgur.com/hxp6wC7.png'
+          message_embed_title: ${{ github.event.issue.title }}
+          message_embed_description: ${{ github.event.issue.body }}
+          message_embed_titleurl: ${{ github.event.issue.html_url }}
+          message_embed_colour: "255,0,0"
+          message_embed_authorname: ${{ github.event.issue.user.login }}
+          message_embed_authorurl: ${{ github.event.issue.user.html_url }}
+          message_embed_authoravatarurl: ${{ github.event.issue.user.avatar_url }}
+          message_usetexttospeech: "false"
